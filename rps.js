@@ -38,7 +38,7 @@ function game() {
         let result = playRound(computer, player);
         if (result.startsWith('Win!', 4)) {
             playerWins++;
-        } else if (result.startsWith('Loose!', 4)) {
+        } else if (result.startsWith('Lose!', 4)) {
             computerWins++;
         } else {
             ties++;
