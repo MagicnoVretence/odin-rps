@@ -17,6 +17,8 @@ function playRound(computerSelection, playerSelection) {
         return `You Win! ${OPTIONS[playerIndex]} beats ${OPTIONS[computerIndex]}!`;
     } else if (computerIndex != 2 && playerIndex > computerIndex) {
         return `You Win! ${OPTIONS[playerIndex]} beats ${OPTIONS[computerIndex]}!`;
+    } else if (computerIndex == playerIndex) {
+        return `Tie! Both players chose ${OPTIONS[playerIndex]}`
     } else {
         return `You Lose! ${OPTIONS[computerIndex]} beats ${OPTIONS[playerIndex]}!`;
     }
@@ -25,6 +27,7 @@ function playRound(computerSelection, playerSelection) {
 function game() {
     let playerWins = 0;
     let computerWins = 0;
+    let ties = 0;
     for (let i = 0; i < 5; i++) {
         let computer = getComputerChoice();
         let player = getPlayerChoice();
@@ -35,12 +38,14 @@ function game() {
         let result = playRound(computer, player);
         if (result.startsWith('Win!', 4)) {
             playerWins++;
-        } else {
+        } else if (result.startsWith('Loose!', 4)) {
             computerWins++;
+        } else {
+            ties++;
         }
         console.log(result);
     }
-    console.log(`Overall result= Player-${playerWins}:Computer-${computerWins}`)
+    console.log(`Overall result \nPlayer ${playerWins} : Computer ${computerWins} : ties ${ties}`);
 }
 
 game();
