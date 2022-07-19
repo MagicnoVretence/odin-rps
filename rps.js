@@ -1,41 +1,56 @@
 const OPTIONS = ['Rock', 'Paper', 'Scissors'];
+let playerWins = 0;
+let computerWins = 0;
+let ties = 0;
+let gamesPlayed = 0;
 
-function getComputerChoice() {
-    return OPTIONS[Math.floor(Math.random() * 3)];
-}
-
-function getPlayerChoice() {
-    let choice = prompt('Choose from "Rock", "Paper" or "Scissors": ');
-    let corrected = choice.at(0).toUpperCase().concat(choice.slice(1).toLowerCase());
-    return corrected;
-}
-
-function playRound(computerSelection, playerSelection) {
-    let computerIndex = OPTIONS.indexOf(computerSelection);
-    let playerIndex = OPTIONS.indexOf(playerSelection);
+function playRound(event) {
+    let computerIndex = Math.floor(Math.random() * 3);
+    let playerIndex = OPTIONS.indexOf(event.target.textContent);
+    let resultText = '';
     if (computerIndex == 2 && playerIndex == 0) {
-        return `You Win! ${OPTIONS[playerIndex]} beats ${OPTIONS[computerIndex]}!`;
+        resultText = `You Win! ${OPTIONS[playerIndex]} beats ${OPTIONS[computerIndex]}!`;
+        playerWins++;
     } else if (computerIndex != 2 && playerIndex > computerIndex) {
-        return `You Win! ${OPTIONS[playerIndex]} beats ${OPTIONS[computerIndex]}!`;
+        resultText = `You Win! ${OPTIONS[playerIndex]} beats ${OPTIONS[computerIndex]}!`;
+        playerWins++;
     } else if (computerIndex == playerIndex) {
-        return `Tie! Both players chose ${OPTIONS[playerIndex]}`
+        resultText = `Tie! Both players chose ${OPTIONS[playerIndex]}`;
     } else {
-        return `You Lose! ${OPTIONS[computerIndex]} beats ${OPTIONS[playerIndex]}!`;
-    }
+        resultText = `You Lose! ${OPTIONS[computerIndex]} beats ${OPTIONS[playerIndex]}!`;
+        computerWins++;
+    };
+    const ispis = document.getElementById('result-text');
+    ispis.textContent = resultText;
 }
 
-function game() {
-    let playerWins = 0;
-    let computerWins = 0;
-    let ties = 0;
-    for (let i = 0; i < 5; i++) {
-        let computer = getComputerChoice();
-        let player = getPlayerChoice();
-        if (!OPTIONS.some(x => x == player)) {
-            console.log('Not a valid choice! Quitting!');
-            break;
-        }
-        let result = playRound(computer, player);
+function setupGame() {
+    playerWins = 0;
+    computerWins = 0;
+    ties = 0;
+
+    const glavniDiv = document.getElementById('main-container');
+    let buttonRock = document.createElement('button');
+    buttonRock.setAttribute('id', 'buttonRock');
+    buttonRock.textContent = 'Rock';
+    buttonRock.setAttribute('class', 'buttons');
+    buttonRock.addEventListener('click', playRound)
+    let buttonPaper = document.createElement('button');
+    buttonPaper.setAttribute('id', 'buttonPaper');
+    buttonPaper.textContent = 'Paper';
+    buttonPaper.setAttribute('class', 'buttons');
+    buttonPaper.addEventListener('click', playRound)
+    let buttonScissors = document.createElement('button');
+    buttonScissors.setAttribute('id', 'buttonScissors');
+    buttonScissors.textContent = 'Scissors';
+    buttonScissors.setAttribute('class', 'buttons');
+    buttonScissors.addEventListener('click', playRound)
+    glavniDiv.appendChild(buttonRock);
+    glavniDiv.appendChild(buttonPaper);
+    glavniDiv.appendChild(buttonScissors);
+
+
+    while ((playerWins < 5) || (computerWins < 5)) {
         if (result.startsWith('Win!', 4)) {
             playerWins++;
         } else if (result.startsWith('Lose!', 4)) {
@@ -48,4 +63,3 @@ function game() {
     console.log(`Overall result \nPlayer ${playerWins} : Computer ${computerWins} : ties ${ties}`);
 }
 
-game();
